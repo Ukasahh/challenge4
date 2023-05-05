@@ -1,4 +1,4 @@
-const {Product} = require('../models/')
+const {Product} = require('../models')
 
 module.exports = {
     index: async (req, res, next) => {
@@ -43,6 +43,14 @@ module.exports = {
         try {
             const {name, description} = req.body;
 
+            if (!name || !description) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'name or description is required!',
+                    data: null
+                }); 
+            };
+
             const product = await Product.create({
                 name: name,
                 description: description
@@ -74,7 +82,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'success',
+                message: 'Product was Updated!',
                 data: null
             });
         } catch (error) {
@@ -98,7 +106,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: true,
-                message: 'success',
+                message: 'Product has been removed!',
                 data: null
             });
         } catch (error) {

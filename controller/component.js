@@ -1,4 +1,4 @@
-const {Components} = require('../models/')
+const {Components} = require('../models')
 
 module.exports = {
     index: async (req, res, next) => {
@@ -42,6 +42,13 @@ module.exports = {
     store: async (req, res, next) => {
         try {
             const {name, description} = req.body;
+            if (!name || !description) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'name or description is required!',
+                    data: null
+                }); 
+            };
 
             const component = await Components.create({
                 name: name,
@@ -50,7 +57,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'success',
+                message: 'Component has been created',
                 data: component
             });
         } catch (error) {
@@ -74,7 +81,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'success',
+                message: 'Component has been Updated!',
                 data: null
             });
         } catch (error) {

@@ -1,4 +1,4 @@
-const {Suppliers} = require('../models/');
+const {Suppliers} = require('../models');
 
 module.exports = {
     index: async (req, res, next) => {
@@ -42,6 +42,13 @@ module.exports = {
     store: async (req, res, next) => {
         try {
             const {name, address} = req.body;
+            if (!name || !address) {
+                return res.status(400).json({
+                    status: false,
+                    message: 'name or address is required!',
+                    data: null
+                }); 
+            };
 
             const supplier = await Suppliers.create({
                 name: name,
@@ -50,7 +57,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'success',
+                message: 'Supplier has been created!',
                 data: supplier
             });
         } catch (error) {
@@ -74,7 +81,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'success',
+                message: 'Supplier has been updated!',
                 data: null
             });
         } catch (error) {
@@ -98,7 +105,7 @@ module.exports = {
 
             return res.status(200).json({
                 status: true,
-                message: 'success',
+                message: 'Supplier has been removed!',
                 data: null
             });
         } catch (error) {
